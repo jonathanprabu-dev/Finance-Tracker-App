@@ -24,7 +24,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+    >
+      <head>
+        {/* Resolve theme before paint to avoid a flash of the wrong theme:
+            use the stored choice if set, otherwise the OS preference. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full">
         <div className="flex min-h-screen">
           <Sidebar />

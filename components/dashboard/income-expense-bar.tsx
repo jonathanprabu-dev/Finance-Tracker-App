@@ -41,7 +41,15 @@ export function IncomeExpenseBar({ data }: { data: Point[] }) {
         />
         <Tooltip
           formatter={(v, name) => [fmt(Number(v)), name === "income" ? "Income" : "Expenses"]}
-          contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", fontSize: 13 }}
+          contentStyle={{
+            borderRadius: 8,
+            border: "1px solid var(--border)",
+            backgroundColor: "var(--card)",
+            color: "var(--foreground)",
+            fontSize: 13,
+          }}
+          labelStyle={{ color: "var(--foreground)" }}
+          itemStyle={{ color: "var(--foreground)" }}
           cursor={{ fill: "var(--muted)" }}
         />
         <Legend

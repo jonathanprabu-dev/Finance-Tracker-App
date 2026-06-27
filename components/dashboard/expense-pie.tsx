@@ -37,7 +37,15 @@ export function ExpensePie({ data }: { data: Slice[] }) {
           </Pie>
           <Tooltip
             formatter={(v, name) => [fmt(Number(v)), String(name)]}
-            contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", fontSize: 13 }}
+            contentStyle={{
+              borderRadius: 8,
+              border: "1px solid var(--border)",
+              backgroundColor: "var(--card)",
+              color: "var(--foreground)",
+              fontSize: 13,
+            }}
+            labelStyle={{ color: "var(--foreground)" }}
+            itemStyle={{ color: "var(--foreground)" }}
           />
         </PieChart>
       </ResponsiveContainer>

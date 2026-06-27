@@ -12,6 +12,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const nav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -53,8 +54,11 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <div className="mt-auto px-3 text-xs text-muted-foreground">
-        Personal Finance Tracker
+      <div className="mt-auto flex flex-col gap-2">
+        <ThemeToggle />
+        <div className="px-3 text-xs text-muted-foreground">
+          Personal Finance Tracker
+        </div>
       </div>
     </aside>
   );
@@ -80,6 +84,7 @@ export function MobileNav() {
           </Link>
         );
       })}
+      <ThemeToggle showLabel={false} className="ml-auto shrink-0 px-2 py-1.5" />
     </nav>
   );
 }

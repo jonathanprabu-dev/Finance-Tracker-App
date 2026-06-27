@@ -1,0 +1,89 @@
+// Unified Finance & Stock Tracker — Prisma schema
+// See FINANCE_APP_SPEC.md for the source of truth.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum LiabilityType {
+  LOAN
+  CREDIT_CARD
+}
+
+model Account {
+  id           String        @id @default(uuid())
+  name         String
+  type         AccountType   @default(CHECKING)
+  balance      Decimal       @default(0)
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  date        DateTime        @default(now())
+  amount      Decimal
+  type        TransactionType
+  category    String
+  isRecurring Boolean         @default(false)
+  note        String?
+  createdAt   DateTime        @default(now())
+
+  accountId String?
+  account   Account? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  liabilityId String?
+  liability   Liability? @relation(fields: [liabilityId], references: [id], onDelete: SetNull)
+
+  @@index([date])
+  @@index([type])
+  @@index([category])
+}
+
+model Liability {
+  id                String          @id @default(uuid())
+  name              String
+  type              LiabilityType   @default(LOAN)
+  totalBalance      Decimal
+  originalBalance   Decimal
+  interestRate      Decimal         @default(0)
+  monthlyMinPayment Decimal         @default(0)
+  createdAt         DateTime        @default(now())
+  payments          Transaction[]
+}
+
+model Stock {
+  id          String   @id @default(uuid())
+  ticker      String   @unique
+  sharesOwned Decimal
+  avgBuyPrice Decimal
+  lastPrice   Decimal  @default(0)
+  lastUpdated DateTime @default(now())
+  createdAt   DateTime @default(now())
+}
+
+model NetWorthSnapshot {
+  id          String   @id @default(uuid())
+  date        DateTime @unique // one snapshot per day (date-only at midnight)
+  cash        Decimal
+  stockValue  Decimal
+  liabilities Decimal
+  netWorth    Decimal
+  createdAt   DateTime @default(now())
+}
